@@ -1,9 +1,7 @@
 package restfull.api.restfullapi.repository;
 
 import java.util.List;
-
-import restfull.api.restfullapi.model.AbstractPerson;
-public interface Repositorio<T extends AbstractPerson> {
+public interface Repositorio<T> {
 
 	List<T> findAll();
 	

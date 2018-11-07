@@ -3,7 +3,11 @@ package restfull.api.restfullapi.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+
 import lombok.Data;
 
 
@@ -13,16 +17,15 @@ public class Address implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long addressId;
 	
-	@SuppressWarnings("unused")
 	private String calle;
 	
-	@SuppressWarnings("unused")
 	private String ciudad;
 	
-	@SuppressWarnings("unused")
 	private String provincia;
+	
 
 	public Long getAddressId() {
 		return addressId;
@@ -54,6 +57,5 @@ public class Address implements Serializable{
 
 	public void setProvincia(String provincia) {
 		this.provincia = provincia;
-	}
-	
+	}	
 }

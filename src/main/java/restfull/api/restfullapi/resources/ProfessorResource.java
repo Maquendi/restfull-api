@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import restfull.api.restfullapi.exceptions.ResourceNotFoundException;
 import restfull.api.restfullapi.model.Professor;
@@ -19,20 +20,21 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
 
 
 @RestController
+@RequestMapping(value = "/professors")
 public class ProfessorResource {
 	
 	@Autowired
 	private Services<Professor> professorService;
 	
 	
-	@GetMapping("/professors")
+	@GetMapping()
 	public List<Professor> getProfessors() {
 		List<Professor> list = professorService.findAll();
 		System.out.println(list);
 		return list;
 	}
 	
-	@GetMapping("/professors/{id}")
+	@GetMapping("/professor/{id}")
 	public Resource<Professor> findById(@PathVariable Long id) {
 		Professor prof = null;
 	  try{
@@ -48,34 +50,21 @@ public class ProfessorResource {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	@PostMapping("/professors")
+	@PostMapping("/professor")
 	public void addProfessor(@RequestBody Professor prof) {
-		professorService.add(prof);
+				professorService.add(prof);
 	}
 	
-	@PutMapping("/professors/{id}")
-	public boolean updateProfessor(@RequestBody Professor prof) {
+	@PutMapping("/professor/{id}")
+	public boolean updateProfessor(@RequestBody Professor prof, @PathVariable long id) {
+		prof.setId(id);
 		return professorService.update(prof);
 	}
 	
 	@DeleteMapping("/professor/{id}")
-	public boolean deleteProfessor(@RequestBody Professor prof) {
+	public boolean deleteProfessor(@RequestBody Professor prof,@PathVariable long id) {
+		prof.setId(id);
 		return this.professorService.remove(prof);
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-
 }

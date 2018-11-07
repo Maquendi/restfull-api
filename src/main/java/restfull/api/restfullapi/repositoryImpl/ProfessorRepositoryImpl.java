@@ -1,6 +1,6 @@
 package restfull.api.restfullapi.repositoryImpl;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,8 +19,8 @@ public class ProfessorRepositoryImpl implements Repositorio<Professor>{
 	@Override
 	public List<Professor> findAll() {
 		
+		@SuppressWarnings("unchecked")
 		List<Professor> list = (List<Professor>) entityManager.createNamedQuery("Professor.findAll").getResultList();
-		
 		return list;
 	}
 
@@ -33,9 +33,13 @@ public class ProfessorRepositoryImpl implements Repositorio<Professor>{
 
 	@Override
 	public boolean update(Professor entity) {
-		if(entityManager.merge(entity) != null) 
+		
+		Professor professor = entityManager.find(Professor.class, entity.getId());
+		if(professor == null)
+			throw new ResourceNotFoundException(Professor.class, entity.getId()); 
+		
+		entityManager.merge(entity);
 			return true;
-		return false;
 	}
 
 	@Override
@@ -46,7 +50,10 @@ public class ProfessorRepositoryImpl implements Repositorio<Professor>{
 
 	@Override
 	public boolean remove(Professor entity) {
-		entityManager.remove(entity);
+		Professor professor = entityManager.find(Professor.class, entity.getId());
+		if(professor == null)
+			throw new ResourceNotFoundException(Professor.class, entity.getId());
+		entityManager.remove(professor);
 		return true;
 	}
 
